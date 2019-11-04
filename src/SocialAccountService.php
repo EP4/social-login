@@ -47,6 +47,14 @@ class SocialAccountService
         ]);
 
         // check for an existing user by email or create a new one
+		$email = $providerUser->getEmail();
+		if (empty($email)){
+			$email = implode('-', [
+						(empty($providerUser->getName()) ? strtolower(str_replace('Provider', '', $providerName)) : str_slug($providerUser->getName())),
+						$providerUser->getId()
+						]);
+		}
+
         $user = User::whereEmail($providerUser->getEmail())->first();
 
         if (!$user) {
