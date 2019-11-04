@@ -30,6 +30,11 @@ class SocialAccountService
         $providerUser = $provider->user();
         $providerName = class_basename($provider);
 
+        // restore the user if it has been soft-deleted
+        if (User::onlyTrashed()->whereEmail($providerUser->getEmail())->first()) {
+            User::onlyTrashed()->whereEmail($providerUser->getEmail())->first()->restore();
+        }
+
         // look for existing social auth
         $account = SocialAccount::whereProvider($providerName)
             ->whereProviderUserId($providerUser->getId())
