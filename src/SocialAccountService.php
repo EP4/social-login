@@ -40,8 +40,8 @@ class SocialAccountService
 		}
 
         // restore the user if it has been soft-deleted
-        if (User::onlyTrashed()->whereEmail($providerUser->getEmail())->first()) {
-            User::onlyTrashed()->whereEmail($providerUser->getEmail())->first()->restore();
+        if (User::onlyTrashed()->whereEmail($email)->first()) {
+            User::onlyTrashed()->whereEmail($email)->first()->restore();
         }
 
         // look for existing social auth
@@ -61,11 +61,11 @@ class SocialAccountService
         ]);
 
         // check for an existing user by email or create a new one
-        $user = User::whereEmail($providerUser->getEmail())->first();
+        $user = User::whereEmail($email)->first();
 
         if (!$user) {
             $attributes = [
-                'email' => $providerUser->getEmail(),
+                'email' => $email,
                 'name' => $providerUser->getName(),
                 'password' => Hash::make(str_random(100)) // we are generating this account so add a crazy password!
             ];
