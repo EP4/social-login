@@ -5,6 +5,7 @@ namespace RicLeP\SocialLogin;
 use Laravel\Spark\Spark;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Socialite\Contracts\Provider;
@@ -67,7 +68,7 @@ class SocialAccountService
             $attributes = [
                 'email' => $email,
                 'name' => $providerUser->getName(),
-                'password' => Hash::make(str_random(100)) // we are generating this account so add a crazy password!
+                'password' => Hash::make(Str::random(100)) // we are generating this account so add a crazy password!
             ];
 
             if (Spark::billsUsingBraintree()) {
