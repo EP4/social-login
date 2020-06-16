@@ -72,7 +72,7 @@ class SocialAccountService
 
             $request = StripeRegisterRequest::create('', 'GET', $attributes);
 
-            $user = Spark::interact(SparkRegister::class, [$request]);
+            list($user) = Spark::interact(SparkRegister::class, [$request]);
 
             $user->forceFill([
                 'generated_password' => true,
