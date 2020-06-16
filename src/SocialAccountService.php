@@ -11,7 +11,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Socialite\Contracts\Provider;
 
 use Laravel\Spark\Http\Requests\Auth\StripeRegisterRequest;
-use Laravel\Spark\Http\Requests\Auth\BraintreeRegisterRequest;
 use Laravel\Spark\Events\Auth\UserRegistered;
 use Laravel\Spark\Contracts\Interactions\Auth\Register as SparkRegister;
 
@@ -71,11 +70,7 @@ class SocialAccountService
                 'password' => Hash::make(Str::random(100)) // we are generating this account so add a crazy password!
             ];
 
-            if (Spark::billsUsingBraintree()) {
-                $request = BraintreeRegisterRequest::create('', 'GET', $attributes);
-            } else {
-                $request = StripeRegisterRequest::create('', 'GET', $attributes);
-            }
+            $request = StripeRegisterRequest::create('', 'GET', $attributes);
 
             $user = Spark::interact(SparkRegister::class, [$request]);
 
